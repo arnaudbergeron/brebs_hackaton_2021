@@ -61,9 +61,10 @@ def recommend_parfaites_queb_immi(pd_df_habitant, df_immi, id): #Fait le match e
     #check if there are compatibilities with language they want to learn and what the immigrants speak
     resultats_langue = np.where((df_immi['langue1'] == str(langue_voulues))|(df_immi['langue2'] == str(langue_voulues)), df_immi['id'], np.nan)
     resultats_ville = np.where(df_immi['ville'] == ville, df_immi['id'], np.nan) #check if there is a match in city
-    resultats = pd.DataFrame(np.where(resultats_langue == resultats_ville, resultats_ville, np.nan))
-
-    resultats.dropna(inplace=True)
+    resultats_langue2 = np.where(((df_immi['langue_apprendre'] == str(langue_parles[0])) | (df_immi['langue_apprendre'] == str(langue_parles[1]))), df_immi['id'], np.nan)
+    resultats_prem = np.where(resultats_langue == resultats_ville, resultats_ville, np.nan)
+    resultats = pd.DataFrame(np.where(resultats_prem == resultats_langue2, resultats_ville, np.nan))
+    resultats.dropna(inplace=True)   
 
     return np.array(resultats) #retourne la liste de tous les immigrants qui match avec l'habitant
 
